@@ -19,4 +19,7 @@ Electricity Information
 https://en.wikipedia.org/wiki/Seattle_City_Light
 http://www.seattle.gov/light/
 
+Migration Rates to Seattle
+https://www.ofm.wa.gov/sites/default/files/public/dataresearch/pop/april1/ofm_april1_press_release.pdf
+
 
