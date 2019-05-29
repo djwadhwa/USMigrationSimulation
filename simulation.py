@@ -2,6 +2,7 @@
 import random as rnd
 import Seattle as sea
 import numpy as N
+import matplotlib.pyplot as plt
 
 deltaTime = 1
 totalTime = 20
@@ -64,6 +65,25 @@ def annualWater(population, childRate, adultRate):
     annualWaterForAdults = waterPerDayForAdults * (population * adultRate) * 365
     totalWater = annualWaterForAdults + annualWaterForKids
     return totalWater
+
+
+def plot(population, unemploymentRate, povertyRate):
+    x = N.linspace(2018, 2018+totalTime, totalTime/deltaTime)
+
+    plt.subplot(3, 1, 1)
+    plt.plot(x, population, 'o-')
+    plt.title('US Migration Simulator Lite')
+    plt.ylabel('Population')
+
+    plt.subplot(3, 1, 2)
+    plt.plot(x, unemploymentRate, 'o-')
+    plt.ylabel('Unemployment Rate')
+
+    plt.subplot(3, 1, 3)
+    plt.plot(x, povertyRate, 'o-')
+    plt.xLabel('Year')
+    plt.ylabel('Poverty Rate')
+
 
 def main():
     adults = int((1-sea.adults)*sea.population)
