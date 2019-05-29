@@ -22,6 +22,5 @@ http://www.seattle.gov/light/
 Migration Rates to Seattle
 https://www.ofm.wa.gov/sites/default/files/public/dataresearch/pop/april1/ofm_april1_press_release.pdf
 
-
-https://www.census.gov/topics/income-poverty/poverty.html
-
+Poverty levels across US States
+https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_poverty_rate
