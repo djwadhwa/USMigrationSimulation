@@ -23,8 +23,7 @@ def childAgeDist(initialChildrenValue):
         temp = max(temp, .13)
         temp = min(temp, .25)
         retVal[year] = temp
-    print(retVal)
     return retVal
     
 #test    
-print (childAgeDist(sea.children))
+print (childAgeDist(sea.children)*100)
