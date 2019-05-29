@@ -42,6 +42,16 @@ def povertyRate(initialPovertyRate):
         retVal[year] = temp
     return retVal
 
+# Job distribution increases at about 2.5% a year.
+def job_dist(jobs):
+    job_array = N.zeros(int(totalTime / deltaTime))
+    job_array[0] = jobs
+    
+    for year in range(1, int(totalTime / deltaTime)):
+        temp = job_array[year - 1] * 0.025
+        job_array[year] = int(job_array[year - 1] + temp)
+
+    print(job_array)
 
 #test    
 print (childAgeDist(sea.children)*100)
