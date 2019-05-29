@@ -53,5 +53,7 @@ def job_dist(jobs):
 
     return job_array
 
-#test    
-print (childAgeDist(sea.children)*100)
+#test
+print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
+print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
+print ("\nJob distribution :\n", job_dist(sea.jobs))
