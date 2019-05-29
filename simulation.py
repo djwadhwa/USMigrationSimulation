@@ -55,9 +55,11 @@ def job_dist(jobs):
 
     return job_array
 
+# Return number of litres of water that would be drunk annually by a population of the
+# indicated size, with the indicated distribution of children and adults
 def annualWater(population, childRate, adultRate):
-    waterPerDayForKids = ( 7 + 10 + 14 ) / 3 * 0.236 #in litre
-    waterPerDayForAdults = 3.7 #in litre
+    waterPerDayForKids = ( 7 + 10 + 14 ) / 3 * 0.236 * 0.264172     #in gallon
+    waterPerDayForAdults = 3.7 * 0.264172                           #in gallon
     annualWaterForKids = waterPerDayForKids * (population * childRate) * 365
     annualWaterForAdults = waterPerDayForAdults * (population * adultRate) * 365
     totalWater = annualWaterForAdults + annualWaterForKids
