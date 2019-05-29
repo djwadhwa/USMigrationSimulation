@@ -11,13 +11,20 @@ def age_dist(population, children, adults):
     print(randNum)
 
 # Function returns an array of the child age distributions at each phase of the simulation
-def childAgeDist(initialPopulation, children, adults):
-    randNums = rnd.uniform(-1, 1, totalTime / deltaTime-1)
+# Child age dist should be between 0.13 and 0.25
+def childAgeDist(initialChildrenValue):
+    randNums = rnd.uniform(-0.1, 0.1, totalTime / deltaTime-1)
     retVal = N.zeros(totalTime / deltaTime)
-    retVal[0] = initialPopulation
+    retVal[0] = initialChildrenValue
+    # For each year, update the child age dist
     for year in range(1, totalTime/deltaTime):
-        retVal[year] = retVal[year-1] + randNums[year-1]
+        temp = retVal[year-1] + randNums[year-1]
+        # Keep child age dist between 0.13 and 0.25
+        temp = max(temp, 13)
+        temp = min(temp, 25)
+        retVal[year] = temp
     print(retVal)
+    return retVal
     
 #test    
 for i in range (10):   
