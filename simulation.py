@@ -1,17 +1,12 @@
 #simulation
 import random as rnd
+import Seattle as sea
 
-def calcMigrationFactors(total_population):
-    if (job_rate <= 10):
-        
-    return job_rate*1/crimerate+1/cost_of_living*education
+deltaTime = 1
+totalTime = 20
+
+def age_dist(population, children, adults):
     
-timestep = 20
-initPop = 724745
-wealth_dist = "normal"
-age_dist = "normal"
-job_rate = 
 
-for i in range (timestep):
     
     
