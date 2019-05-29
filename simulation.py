@@ -6,9 +6,11 @@ import numpy as N
 deltaTime = 1
 totalTime = 20
 
+
 def age_dist(population, children, adults):
     randNum = rnd.uniform(-1,1)
     print(randNum)
+
 
 # Function returns an array of the child age distributions at each phase of the simulation
 # Child age dist should be between 0.13 and 0.25
@@ -23,7 +25,23 @@ def childAgeDist(initialChildrenValue):
         temp = max(temp, .13)
         temp = min(temp, .25)
         retVal[year] = temp
+    return retVal# Function returns an array of the child age distributions at each phase of the simulation
+
+
+# Poverty rate should be between 0.09 and 0.23
+def povertyRate(initialPovertyRate):
+    randNums = N.random.uniform(-0.02, 0.02, int(totalTime / deltaTime))
+    retVal = N.zeros(int(totalTime / deltaTime))
+    retVal[0] = initialPovertyRate
+    # For each year, update the poverty rate
+    for year in range(1, int(totalTime / deltaTime)):
+        temp = retVal[year-1] + randNums[year-1]
+        # Keep poverty rate between 0.09 and 0.23
+        temp = max(temp, .09)
+        temp = min(temp, .23)
+        retVal[year] = temp
     return retVal
-    
+
+
 #test    
 print (childAgeDist(sea.children)*100)
