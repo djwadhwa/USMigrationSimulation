@@ -42,13 +42,15 @@ def povertyRate(initialPovertyRate):
         retVal[year] = temp
     return retVal
 
-# Job distribution increases at about 2.5% a year.
+# Job distribution increases at about 2% to 2.5% a year.
 def job_dist(jobs):
     job_array = N.zeros(int(totalTime / deltaTime))
     job_array[0] = jobs
     
     for year in range(1, int(totalTime / deltaTime)):
-        temp = job_array[year - 1] * 0.025
+        #get a random value between 2% to 2.5%
+        random_job_increase = N.random.uniform(0.020 ,0.025)
+        temp = job_array[year - 1] * random_job_increase
         job_array[year] = int(job_array[year - 1] + temp)
 
     return job_array
