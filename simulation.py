@@ -2,6 +2,7 @@
 import random as rnd
 import Seattle as sea
 import numpy as N
+import matplotlib.pyplot as plt
 
 deltaTime = 1
 totalTime = 20
@@ -63,6 +64,7 @@ def annualWater(population, childRate, adultRate):
     totalWater = annualWaterForAdults + annualWaterForKids
     return totalWater
 
+<<<<<<< HEAD
 def main():
     adultDist= (1-childAgeDist(sea.children))
     adults = adultDist[0]*sea.population
@@ -73,6 +75,44 @@ def main():
         population += migrants 
         adults = int(adultDist[i]*population)
         print (int(population))
+=======
+
+# Return an array of how many migrants the city gains/loses yearly
+def migrants():
+    numAdults = (1-childAgeDist(sea.children))*sea.population
+    for i in range (int(totalTime/deltaTime)):
+        numAdults [i] = int (numAdults[i])
+    total_jobs = job_dist(sea.jobs)
+    migrants = (1 - total_jobs/numAdults)*sea.jobs
+    return migrants
+
+
+# Generates a plot, showing the population, unemployment rate, and poverty rate throughout the simulation
+def plot(population, unemploymentRate, povertyRate):
+    x = N.linspace(2018, 2018+totalTime, totalTime/deltaTime)
+
+    plt.subplot(3, 1, 1)
+    plt.plot(x, population, 'o-')
+    plt.title('US Migration Simulator Lite')
+    plt.ylabel('Population')
+
+    plt.subplot(3, 1, 2)
+    plt.plot(x, unemploymentRate, 'o-')
+    plt.ylabel('Unemployment Rate')
+
+    plt.subplot(3, 1, 3)
+    plt.plot(x, povertyRate, 'o-')
+    plt.xLabel('Year')
+    plt.ylabel('Poverty Rate')
+
+
+# def simulate():
+
+
+
+# def main():
+
+>>>>>>> 5f3014569b1872591c87180742bc5727f6c8a658
     
 #test
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
