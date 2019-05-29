@@ -51,7 +51,7 @@ def job_dist(jobs):
         temp = job_array[year - 1] * 0.025
         job_array[year] = int(job_array[year - 1] + temp)
 
-    print(job_array)
+    return job_array
 
 #test    
 print (childAgeDist(sea.children)*100)
