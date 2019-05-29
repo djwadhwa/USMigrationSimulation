@@ -58,8 +58,8 @@ def job_dist(jobs):
 def annualWater(population, childRate, adultRate):
     waterPerDayForKids = ( 7 + 10 + 14 ) / 3 * 0.236 #in litre
     waterPerDayForAdults = 3.7 #in litre
-    annualWaterForKids = waterPerDayForKids * (population * childRate)
-    annualWaterForAdults = waterPerDayForAdults * (population * adultRate)
+    annualWaterForKids = waterPerDayForKids * (population * childRate) * 365
+    annualWaterForAdults = waterPerDayForAdults * (population * adultRate) * 365
     totalWater = annualWaterForAdults + annualWaterForKids
     return totalWater
 
