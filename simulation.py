@@ -61,6 +61,17 @@ def annualWater(population, childRate, adultRate):
     return totalWater
 
 
+# Return an array of how many migrants the city gains/loses yearly
+def migrants():
+    numAdults = (1-childAgeDist(sea.children))*sea.population
+    for i in range (int(totalTime/deltaTime)):
+        numAdults [i] = int (numAdults[i])
+    total_jobs = job_dist(sea.jobs)
+    migrants = (1 - total_jobs/numAdults)*sea.jobs
+    return migrants
+
+
+# Generates a plot, showing the population, unemployment rate, and poverty rate throughout the simulation
 def plot(population, unemploymentRate, povertyRate):
     x = N.linspace(2018, 2018+totalTime, totalTime/deltaTime)
 
@@ -79,13 +90,12 @@ def plot(population, unemploymentRate, povertyRate):
     plt.ylabel('Poverty Rate')
 
 
-def main():
-    adults = (1-childAgeDist(sea.children))*sea.population
-    for i in range (int(totalTime/deltaTime)):
-        adults [i] = int (adults[i])
-    total_jobs = job_dist(sea.jobs)
-    migrants = (1 - total_jobs/adults)*sea.jobs
-    return migrants
+# def simulate():
+
+
+
+# def main():
+
     
 #test
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
