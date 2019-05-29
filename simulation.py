@@ -53,6 +53,14 @@ def job_dist(jobs):
 
     return job_array
 
+def annualWater(population, childRate, adultRate):
+    waterPerDayForKids = ( 7 + 10 + 14 ) / 3 * 0.236 #in litre
+    waterPerDayForAdults = 3.7 #in litre
+    annualWaterForKids = waterPerDayForKids * (population * childRate)
+    annualWaterForAdults = waterPerDayForAdults * (population * adultRate)
+    totalWater = annualWaterForAdults + annualWaterForKids
+    return totalWater
+
 #test
 print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
 print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
