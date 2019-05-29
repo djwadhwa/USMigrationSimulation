@@ -58,14 +58,19 @@ def job_dist(jobs):
 # Return number of litres of water that would be drunk annually by a population of the
 # indicated size, with the indicated distribution of children and adults
 def annualWater(population, childRate, adultRate):
-    waterPerDayForKids = ( 7 + 10 + 14 ) / 3 * 0.236 * 0.264172     #in gallon
-    waterPerDayForAdults = 3.7 * 0.264172                           #in gallon
+    waterPerDayForKids = ( 7 + 10 + 14 ) / 3 * 0.236 * 0.264172     #in gallons
+    waterPerDayForAdults = 3.7 * 0.264172                           #in gallons
     annualWaterForKids = waterPerDayForKids * (population * childRate) * 365
     annualWaterForAdults = waterPerDayForAdults * (population * adultRate) * 365
     totalWater = annualWaterForAdults + annualWaterForKids
     return totalWater
 
+def main():
+    adults = int((1-sea.adults)*sea.population)
+    
 #test
 print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
 print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
 print ("\nJob distribution :\n", job_dist(sea.jobs))
+
+print(main())
