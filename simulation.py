@@ -7,12 +7,6 @@ import matplotlib.pyplot as plt
 deltaTime = 1
 totalTime = 20
 
-
-def age_dist(population, children, adults):
-    randNum = rnd.uniform(-1,1)
-    print(randNum)
-
-
 # Function returns an array of the child age distributions at each phase of the simulation
 # Child age dist should be between 0.13 and 0.25
 def childAgeDist(initialChildrenValue):
@@ -86,11 +80,15 @@ def plot(population, unemploymentRate, povertyRate):
 
 
 def main():
-    adults = int((1-sea.adults)*sea.population)
+    adults = (1-childAgeDist(sea.children))*sea.population
+    for i in range (int(totalTime/deltaTime)):
+        adults [i] = int (adults[i])
+    total_jobs = job_dist(sea.jobs)
+    migrants = (1 - total_jobs/adults)*sea.jobs
+    return migrants
     
 #test
-print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
-print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
-print ("\nJob distribution :\n", job_dist(sea.jobs))
-
+# print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
+# print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
+# print ("\nJob distribution :\n", job_dist(sea.jobs))
 print(main())
