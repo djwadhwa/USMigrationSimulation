@@ -1,4 +1,5 @@
-
+Seattle
+--------
 Economic Wealth/Finances 
 https://www.bls.gov/regions/west/summary/blssummary_seattle.pdf
 
@@ -24,3 +25,18 @@ https://www.ofm.wa.gov/sites/default/files/public/dataresearch/pop/april1/ofm_ap
 
 Poverty levels across US States
 https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_poverty_rate
+
+----------------------------------------------------------------------------------------------------------------
+Chicago
+
+Population Estimate in 2018 
+https://www.census.gov/quickfacts/fact/table/chicagocityillinois/IPE120217
+
+Employment Rate/Economic Summary
+https://www.bls.gov/regions/midwest/summary/blssummary_chicago.pdf
+
+----------------------------------------------------------------------------------------------------------------
+
+
+
+
