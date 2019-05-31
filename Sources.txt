@@ -36,6 +36,26 @@ Employment Rate/Economic Summary
 https://www.bls.gov/regions/midwest/summary/blssummary_chicago.pdf
 
 ----------------------------------------------------------------------------------------------------------------
+New York
+
+Population Estimate
+https://www.census.gov/quickfacts/fact/table/NY/PST045218
+
+Employment Rate/Economic Summmary
+https://www.bls.gov/regions/new-york-new-jersey/summary/blssummary_newyorkarea.pdf
+
+---------------------------------------------------------------------------------------------------------------
+Los Angeles
+
+Population Estimate
+https://www.census.gov/quickfacts/fact/table/losangelescitycalifornia/PST045218
+
+Employment Rate/Economic Summary
+https://www.bls.gov/regions/west/ca_losangeles_md.htm
+
+
+----------------------------------------------------------------------------------------------------------------
+
 
 
 
