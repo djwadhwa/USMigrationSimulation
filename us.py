@@ -1,0 +1,1 @@
+natural_population_growth = (0, 0.006)
