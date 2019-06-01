@@ -15,7 +15,6 @@ https://www.census.gov/quickfacts/fact/table/seattlecitywashington,US/PST045218
 Food Consumptions by Adults and Children
 https://www.ers.usda.gov/data-products/food-consumption-and-nutrient-intakes/food-consumption-and-nutrient-intakes/#Nutrient%20Intake%20Estimates
 
-
 Electricity Information
 https://en.wikipedia.org/wiki/Seattle_City_Light
 http://www.seattle.gov/light/
@@ -26,6 +25,17 @@ https://www.ofm.wa.gov/sites/default/files/public/dataresearch/pop/april1/ofm_ap
 Poverty levels across US States
 https://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_poverty_rate
 
+Crime Rate 
+http://www.seattle.gov/police/information-and-data/crime-dashboard
+
+Rent Statistics 
+https://www.deptofnumbers.com/rent/washington/seattle/
+
+Local Sales Tax Rates (2006 - 2018)
+https://dor.wa.gov/get-form-or-publication/forms-subject/local-sales-use-tax-rates-citycounty
+
+Yearly population growth sans migration
+https://data.worldbank.org/indicator/SP.POP.GROW
 ----------------------------------------------------------------------------------------------------------------
 Chicago
 
