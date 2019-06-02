@@ -1,6 +1,7 @@
 #simulation
 import numpy.random as rnd
 import Seattle as sea
+import Chicago as chi
 import us 
 import numpy as N
 import matplotlib.pyplot as plt
@@ -44,7 +45,7 @@ def natural_pop_growth (population):
     return total_natural_pop
     
 # Job distribution increases at about 2% to 2.5% a year.
-def job(jobs, job_rate):
+def jobs(jobs, job_rate):
     lower_bound = job_rate[0];
     upper_bound = job_rate[1];
     
@@ -54,7 +55,7 @@ def job(jobs, job_rate):
     
     return total_jobs
 
-def crime(crimes, crime_rate):
+def crimes(crimes, crime_rate):
     lower_bound = crime_rate[0];
     upper_bound = crime_rate[1];
     
@@ -99,8 +100,8 @@ def water_consumption(population, adult_dist):
 def food(population, child_rate):
     return 0
     
-def calculate_migrants(jobs, crime, rent, taxes):
-    return 0
+def calculate_migrants(free_jobs, crimes, rent, taxes):
+    return free_jobs * 1/crimes * rent *taxes
     
 def main(city, time):
     
@@ -108,7 +109,7 @@ def main(city, time):
     adults = city.adults*city.population
     population = city.population
     
-    jobs = city.jobs
+    total_jobs = city.jobs
     crimes = city.crimes
     rent = city.rent
     taxes = city.taxes
@@ -116,17 +117,20 @@ def main(city, time):
     population_array = N.zeros(time);
     
     for i in range (time):
-        migrants = calculate_migrants(jobs, crime, rent, taxes)
-        population = natural_pop_growth(population) 
+        free_jobs = (1-total_jobs/adults)*city.population
+        migrants = calculate_migrants(free_jobs, crimes, rent, taxes)
+        # population = natural_pop_growth(population) 
         population += migrants
         
         adult_dist = 1 - age_dist(1-adult_dist)
         adults = adult_dist * population
+        total_jobs = jobs(total_jobs, city.job_range)
         population_array[i] = int(population)
         
-    plt.plot(N.arange(time), population_array)
+    # plt.plot(N.arange(time), population_array)
     print (population_array)
     plt.plot(N.arange(time), population_array)
+    # plt.plot (N.arange(time), )
     plt.show()
 
 
