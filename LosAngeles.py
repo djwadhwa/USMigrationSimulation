@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 
-population = 3990456
+population = 4070000
 children = 0.213       # Portion of population which is under 18 y.o.
 adults = 1- children    # Portion of population which is over 18 y.o.
 povertyRate = 0.204
