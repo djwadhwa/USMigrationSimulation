@@ -1,5 +1,6 @@
 #simulation
 import numpy.random as rnd
+import Seattle as sea
 import us 
 import numpy as N
 import matplotlib.pyplot as plt
@@ -9,7 +10,7 @@ totalTime = 20
 
 # Function returns an array of the child age distributions at each phase of the simulation
 # Child age dist should be between 0.13 and 0.25
-def AgeDist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
+def age_dist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
     rand = rnd.uniform(-0.02, 0.02)
     
     # Keep child age dist between 0.13 and 0.25
@@ -35,7 +36,7 @@ def AgeDist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
 #     return retVal
 
 def natural_pop_growth (population):
-    delta_natural_pop = population * rnd.uniform 
+    delta_natural_pop = population * rnd.uniform \
     (us.natural_population_growth[0], us.natural_population_growth[1])
     
     total_natural_pop = population + delta_natural_pop
@@ -101,9 +102,12 @@ def food(population, child_rate):
 def calculate_migrants(jobs, crime, rent, taxes):
     return 0
     
-def main(city, time):    
+def main(city, time):
+    
+    adult_dist = city.adults
     adults = city.adults*city.population
     population = city.population
+    
     jobs = city.jobs
     crimes = city.crimes
     rent = city.rent
@@ -113,9 +117,13 @@ def main(city, time):
     
     for i in range (time):
         migrants = calculate_migrants(jobs, crime, rent, taxes)
+        population = natural_pop_growth(population) 
         population += migrants
-        adults = int(adultDist[i]*population)
+        
+        adult_dist = 1 - age_dist(1-adult_dist)
+        adults = adult_dist * population
         population_array[i] = int(population)
+        
     plt.plot(N.arange(time), population_array)
     print (population_array)
     plt.plot(N.arange(time), population_array)
@@ -144,4 +152,4 @@ def main(city, time):
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
 # print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
 # print ("\nJob distribution :\n", job_dist(sea.jobs))
-main()
+main(sea, 20)
