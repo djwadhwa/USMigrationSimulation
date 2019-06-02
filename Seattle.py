@@ -2,8 +2,8 @@ import csv
 import numpy as np
 
 population = 724745
-children = 0.153        # Portion of population which is under 18 y.o.
-adults = 1- children    # Portion of population which is over 18 y.o.
+children = 0.153        # Portion of population under 18 y.o.
+adults = 1- children    # Portion of population over 18 y.o.
 povertyRate = 0.125
 
 jobs =  506880
@@ -18,7 +18,7 @@ with open ("seattle_data.csv") as csv_file:
     
     for row in read_csv:
         rent_list.append(int (row [1]))
-        taxes_list.append(row [2])
+        taxes_list.append(float(row [2]))
         crimes_list.append(int (row [3]))
         
 rent = rent_list[-1]
