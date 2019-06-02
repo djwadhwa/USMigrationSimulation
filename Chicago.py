@@ -18,7 +18,7 @@ with open ("chicago_data.csv") as csv_file:
     
     for row in read_csv:
         rent_list.append(int (row [1]))
-        taxes_list.append(row [2])
+        taxes_list.append(float (row [2]))
         crimes_list.append(int (row [3]))
         
 rent = rent_list[-1]
