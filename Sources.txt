@@ -36,6 +36,9 @@ https://dor.wa.gov/get-form-or-publication/forms-subject/local-sales-use-tax-rat
 
 Yearly population growth sans migration
 https://data.worldbank.org/indicator/SP.POP.GROW
+
+Department of Labor stats accounting for migrants in the labor force
+https://www.bls.gov/news.release/pdf/forbrn.pdf
 ----------------------------------------------------------------------------------------------------------------
 Chicago
 
