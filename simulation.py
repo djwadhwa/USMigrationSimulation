@@ -2,6 +2,8 @@
 import numpy.random as rnd
 import Seattle as sea
 import Chicago as chi
+import LosAngeles as la
+import NewYork as ny
 import us 
 import numpy as N
 import matplotlib.pyplot as plt
