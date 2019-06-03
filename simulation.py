@@ -117,54 +117,66 @@ def printer(city, population_array, time_array):
 def calculate_migrants(free_jobs, crimes, rent, taxes):
     # return free_jobs * 1/crimes * rent *taxes
     # return (0.7*free_jobs - 0.6*crimes - 7*rent - 30000*taxes)
-    return free_jobs - N.log(crimes+rent*1/taxes)
+    return 2*free_jobs
     
 def main(city, time = 20, trials = 100):
-    
-    adult_dist = city.adults
-    adults = city.adults*city.population
-    population = city.population
-    
-    total_jobs = city.jobs
-    crimes = city.crimes
-    rent = city.rent
-    taxes = city.taxes
-    
-    # print (population)
-    
-    time_array = N.arange(time)
-    population_array = N.zeros(time)
-    water_array = N.zeros(time)
-    population_array[0] = city.population
-    
-    for year in range (1, time):
+    population_average = []
+    pop = []
+    wat =[]
+    water_average = []
+    for trial in range(trials):
+        adult_dist = city.adults
+        adults = city.adults*city.population
+        
+        total_jobs = city.jobs
+        crimes = city.crimes
+        rent = city.rent
+        taxes = city.taxes
+        
+        
+        time_array = N.arange(time)
+        population_array = N.zeros(time)
+        water_array = N.zeros(time)
+        population_array[0] = city.population
+        
+        for year in range (1, time):
+            #0.174 
+            free_jobs = total_jobs*.174 + (total_jobs-adults)
+            migrants = calculate_migrants(free_jobs, crimes, rent, taxes)
+            # print (migrants/population_array[year-1])
+            # ratio = 1 - (migrants/population_array[year-1])
+            # migrants *= ratio
+            population_array[year] = natural_pop_growth(population_array[year-1]) 
+            population_array[year] += migrants
+            # print (migrants / population)
+            #output
+            water_array[year] = int (water_consumption (population_array[year], adult_dist))
             
-        free_jobs = total_jobs*.174+ total_jobs-adults
-        # print(free_jobs)
-        migrants = calculate_migrants(free_jobs, crimes, rent, taxes)
-        population_array[year] = natural_pop_growth(population_array[year-1]) 
-        population_array[year] += migrants
-        # print (migrants / population)
-        #output
-        water_array[year] = int (water_consumption(population, adult_dist))
+            #update every year
+            adult_dist = 1 - age_dist(1-adult_dist)
+            adults = adult_dist * population_array[year]
+            total_jobs = update_jobs(total_jobs, city.job_range)
+            crimes = update_crimes(crimes,city.crimes_range )
+            rent = update_rent(rent, city.rent_range)
+            taxes = update_taxes (taxes, city.taxes_range)
+            
+        population_average.append(population_array)
+        water_average.append(water_array)
         
-        #update every year
-        adult_dist = 1 - age_dist(1-adult_dist)
-        adults = adult_dist * population
-        total_jobs = update_jobs(total_jobs, city.job_range)
-        crimes = update_crimes(crimes,city.crimes_range )
-        rent = update_rent(rent, city.rent_range)
-        taxes = update_taxes (taxes, city.taxes_range)
+    for i in range(time):
+        pop.append(N.average(population_average[:][i]))
+        wat.append(N.average(water_average[:][i]))
         
-    printer (city, population_array, time_array)
-    plotter (city, population_array, water_array, time_array)
-
+    # printer (city, pop, time_array)
+    plotter (city, pop, wat, time_array)
+    
 #test
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
 # print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
 # print ("\nJob distribution :\n", job_dist(sea.jobs))
-# main(sea, 13)
-main(chi, 13)
+
+main(sea, 13)
+# main(chi, 13)
 # main(la, 13)
 # main(ny, 13)
 
