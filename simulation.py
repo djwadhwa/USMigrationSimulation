@@ -119,7 +119,7 @@ def calculate_migrants(free_jobs, crimes, rent, taxes):
     # return (0.7*free_jobs - 0.6*crimes - 7*rent - 30000*taxes)
     return free_jobs - N.log(crimes+rent*1/taxes)
     
-def main(city, time = 20, trials = 1000):
+def main(city, time = 20, trials = 100):
     
     adult_dist = city.adults
     adults = city.adults*city.population
