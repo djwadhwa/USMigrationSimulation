@@ -18,8 +18,10 @@ def age_dist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
     
     # Keep child age dist between 0.13 and 0.25
     temp = prev_child_percentage + rand
-    # temp = max(temp, lower_bound)
-    # temp = min(temp, upper_bound)
+    if temp > upper_bound:
+        temp = min(temp, upper_bound)
+    elif temp < lower_bound:
+        temp = max(temp, lower_bound)
     
     # Function returns an array of the child age distributions at each phase of the simulation  
     return temp
@@ -117,7 +119,7 @@ def calculate_migrants(free_jobs, crimes, rent, taxes):
     # return (0.7*free_jobs - 0.6*crimes - 7*rent - 30000*taxes)
     return free_jobs - N.log(crimes+rent*1/taxes)
     
-def main(city, time = 20, trials = 100):
+def main(city, time = 20, trials = 1000):
     
     adult_dist = city.adults
     adults = city.adults*city.population
@@ -136,7 +138,7 @@ def main(city, time = 20, trials = 100):
     population_array[0] = city.population
     
     for year in range (1, time):
-        
+            
         free_jobs = total_jobs*.174+ total_jobs-adults
         # print(free_jobs)
         migrants = calculate_migrants(free_jobs, crimes, rent, taxes)
@@ -161,4 +163,8 @@ def main(city, time = 20, trials = 100):
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
 # print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
 # print ("\nJob distribution :\n", job_dist(sea.jobs))
-main(sea, 13)
+# main(sea, 13)
+main(chi, 13)
+# main(la, 13)
+# main(ny, 13)
+
