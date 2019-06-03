@@ -1,6 +1,11 @@
 import csv
 import numpy as np
 
+Name = "Seattle"
+children = 0.153        # Portion of population under 18 y.o.
+adults = 1- children    # Portion of population over 18 y.o.
+povertyRate = 0.125
+
 crimes_list = []
 rent_list = []
 taxes_list = []
@@ -16,16 +21,15 @@ with open ("seattle_data.csv") as csv_file:
         crimes_list.append(int (row [3]))
         pop_list.append(int (row[4]))
         jobs_list.append(int(row[5]))
-        
-Name = "Seattle"
+
 population = pop_list[0]
-children = 0.153        # Portion of population under 18 y.o.
-adults = 1- children    # Portion of population over 18 y.o.
-povertyRate = 0.125
+print(pop_list)
 
 jobs =  jobs_list[0]
-job_range = (.02, .025)
-print (pop_list)
+#job_range = (.02, .025)
+job_std_percentage = np.std(jobs_list[:-1])/np.mean(jobs_list)
+job_range = (-job_std_percentage, job_std_percentage)
+
 rent = rent_list[0]
 rent_std_percentage = np.std(rent_list[:-1])/np.mean(rent_list)
 rent_range = (-rent_std_percentage, rent_std_percentage)
