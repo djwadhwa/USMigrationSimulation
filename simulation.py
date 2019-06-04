@@ -118,8 +118,22 @@ def calculate_migrants(free_jobs, crimes, rent, taxes):
     # return free_jobs * 1/crimes * rent *taxes
     # return (0.7*free_jobs - 0.6*crimes - 7*rent - 30000*taxes)
     return 2*free_jobs
-    
+
+
 def main(city, time = 20, trials = 100):
+    """ Run the model on a city, predict yearly population and water.
+
+    Args:
+        city:               The class representing the city being modeled
+        time (int):         Number of years over which to run the model
+        trials (int):       Number of trials for which to run the model
+
+    Returns:
+        city:               an int representing the absolute error of the model
+        pop (List)          A list of ints representing population size across years
+        wat (List)          A list of ints representing water amount across years
+        time_array (List)   A list of ints representing years which are modeled
+    """
     population_average = []
     pop = []
     wat =[]
@@ -167,8 +181,30 @@ def main(city, time = 20, trials = 100):
         pop.append(N.average(population_average[:][i]))
         wat.append(N.average(water_average[:][i]))
         
-    # printer (city, pop, time_array)
-    plotter (city, pop, wat, time_array)
+    return (city, pop, wat, time_array)
+
+
+def absoluteError(city, population_array, time_array):
+    """ Function to return the absolute error of a city's population model.
+    Absolute error = |correct - result|
+
+    Args:
+        city:                       The class representing the city being modeled
+        population_array (list):    List of
+        time_array (list):          List of
+
+    Returns:
+        population_error (int):     an int representing the absolute error of the model
+    """
+    # absolute error = |correct - result|
+    population_error = 0
+    for i in time_array:
+        population_error = population_error + abs(city.pop_list[i] - population_array[i])
+    return population_error
+
+
+def relativeError(city, population_array, water_array, time_array, time = 20):
+#
     
 #test
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
@@ -176,6 +212,11 @@ def main(city, time = 20, trials = 100):
 # print ("\nJob distribution :\n", job_dist(sea.jobs))
 
 main(sea, 13)
+(city, pop, wat, time_array) = main(sea, 13)
+# printer (city, pop, time_array)
+plotter (city, pop, wat, time_array)
+
+
 # main(chi, 13)
 # main(la, 13)
 # main(ny, 13)
