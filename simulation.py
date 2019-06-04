@@ -1,15 +1,16 @@
 #simulation
 import numpy.random as rnd
+import numpy as N
+import matplotlib.pyplot as plt
+
 import Seattle as sea
 import Chicago as chi
 import LosAngeles as la
 import NewYork as ny
 import us 
-import numpy as N
-import matplotlib.pyplot as plt
 
-deltaTime = .5
-totalTime = 20
+#store the number of years to simulate for
+time = 13
 
 # Function returns an array of the child age distributions at each phase of the simulation
 # Child age dist should be between 0.13 and 0.25
@@ -139,9 +140,7 @@ def printer(city, population_array, time_array, file_name = None):
 
 
 def calculate_migrants(free_jobs, crimes, rent, taxes):
-    # return free_jobs * 1/crimes * rent *taxes
-    # return (0.7*free_jobs - 0.6*crimes - 7*rent - 30000*taxes)
-    return 2*free_jobs
+    return 2*free_jobs * (40000/crimes) * (400/rent) * (20*taxes)
 
 
 def model(city, time = 20, trials = 100):
@@ -160,6 +159,7 @@ def model(city, time = 20, trials = 100):
     """
     population_average = []
     pop = []
+    pop.append(city.population)
     wat =[]
     food = []
     water_average = []
@@ -205,7 +205,7 @@ def model(city, time = 20, trials = 100):
         water_average.append(water_array)
         food_average.append(food_array)
         
-    for i in range(time):
+    for i in range(time-1):
         pop.append(N.average(population_average[:][i]))
         wat.append(N.average(water_average[:][i]))
         food.append(N.average(food_average[:][i]))
@@ -253,7 +253,7 @@ def relativeError(city, population_array, time_array):
 
 
 def runModelTest(city, file_name = None):
-    (city, pop, wat, time_array) = model(sea, 13)
+    (city, pop, wat, time_array) = model(city, time)
     # Calculate error
     absolute_error = absoluteError(city, pop, time_array)
     relative_error = relativeError(city, pop, time_array)
@@ -272,9 +272,8 @@ def runModelTest(city, file_name = None):
         file.write("Relative Error: ", relative_error)
         file.close()
 
-
-runModelTest(sea)
-
+# for i in range (10):
+runModelTest(ny)
 
 # main(chi, 13)
 # main(la, 13)
