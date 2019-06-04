@@ -108,11 +108,23 @@ def plotter (city, popualtion_array, water_array, time_array):
     # ax1.set_xlabel("Time (years)")
     # ax1.set_ylabel("Water consumed (100 million gallons)")
     plt.show()
-    
-def printer(city, population_array, time_array):
-    print (city.Name+"s poulation over " + str(len(time_array)) + "years")
-    for year in time_array:
-        print (2006+year, "\t", population_array[year] )
+
+
+def printer(city, population_array, time_array, file_name = None):
+    # If outputting to stdout
+    if(file_name == None):
+        print (city.Name+"s poulation over " + str(len(time_array)) + "years")
+        for year in time_array:
+            print (2006+year, "\t", population_array[year] )
+    # If writing to a file
+    else:
+        file = open(file_name, "w")
+        file.write(city.Name+"s poulation over " + str(len(time_array)) + "years")
+        for year in time_array:
+            line = str(2006+year, "\t", str(population_array[year]) )
+            file.write(line)
+        file.close()
+
 
 def calculate_migrants(free_jobs, crimes, rent, taxes):
     # return free_jobs * 1/crimes * rent *taxes
@@ -120,7 +132,7 @@ def calculate_migrants(free_jobs, crimes, rent, taxes):
     return 2*free_jobs
 
 
-def main(city, time = 20, trials = 100):
+def model(city, time = 20, trials = 100):
     """ Run the model on a city, predict yearly population and water.
 
     Args:
@@ -146,8 +158,7 @@ def main(city, time = 20, trials = 100):
         crimes = city.crimes
         rent = city.rent
         taxes = city.taxes
-        
-        
+
         time_array = N.arange(time)
         population_array = N.zeros(time)
         water_array = N.zeros(time)
@@ -221,16 +232,30 @@ def relativeError(city, population_array, time_array):
         population_error = population_error + (abs(city.pop_list[i] - population_array[i])
                                                / abs(city.pop_list[i]))
     return population_error
-    
-#test
-# print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
-# print ("\nPoverty rate :\n", povertyRate(sea.povertyRate)*100)
-# print ("\nJob distribution :\n", job_dist(sea.jobs))
 
-main(sea, 13)
-(city, pop, wat, time_array) = main(sea, 13)
-# printer (city, pop, time_array)
-plotter (city, pop, wat, time_array)
+
+def runModelTest(city, file_name = None):
+    (city, pop, wat, time_array) = model(sea, 13)
+    # Calculate error
+    absolute_error = absoluteError(city, pop, time_array)
+    relative_error = relativeError(city, pop, time_array)
+    # Print output
+    printer (city, pop, time_array, file_name)
+    # Plot graph
+    plotter (city, pop, wat, time_array)
+    # If outputting to stdout
+    if(file_name == None):
+        print("Absolute Error: ", absolute_error)
+        print("Relative Error: ", relative_error)
+    # If writing to a file
+    else:
+        file = open(file_name, "a")
+        file.write("Absolute Error: ", absolute_error)
+        file.write("Relative Error: ", relative_error)
+        file.close()
+
+
+runModelTest(sea)
 
 
 # main(chi, 13)
