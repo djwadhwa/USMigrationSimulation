@@ -140,8 +140,11 @@ def printer(city, population_array, time_array, file_name = None):
         file.close()
 
 
-def calculate_migrants(free_jobs, crimes, rent, taxes):
-    return 2* free_jobs * (1- taxes) + crimes
+def calculate_migrants(city, free_jobs, crimes, rent, taxes):
+    if (city == sea):
+        return 0.5*free_jobs - (10/taxes) - 0.25*crimes - 0.8*rent
+    elif(city == chi):
+        return 0.2*free_jobs - (100/taxes) - 0.45*crimes - 0.8*rent
 
 
 def model(city, time = 20, trials = 100):
@@ -181,21 +184,20 @@ def model(city, time = 20, trials = 100):
         population_array[0] = city.population
         
         for year in range (1, time):
+            
             #0.174 is the amount of jobs that are worked by migrants
-            free_jobs = total_jobs*us.migrant_jobs + (total_jobs-adults)
-            migrants = calculate_migrants(free_jobs, crimes, rent, taxes)
-            # print (migrants/population_array[year-1])
-            # ratio = 1 - (migrants/population_array[year-1])
+            free_jobs = total_jobs*us.migrant_jobs
+            migrants = calculate_migrants(city, free_jobs, crimes, rent, taxes)
             population_array[year] = natural_pop_growth(population_array[year-1]) 
             population_array[year] += migrants
-            # print (migrants / population)
+
             #output
             water_array[year] = water_consumption (population_array[year], adult_dist)
             food_array[year] = food_consumption (population_array[year], adult_dist)
             
             #update every year
             adult_dist = 1 - age_dist(1-adult_dist)
-            adults = adult_dist * population_array[year]
+            adults = adult_dist * population_array[year-1]
             total_jobs = update_jobs(total_jobs, city.job_range)
             crimes = update_crimes(crimes,city.crimes_range )
             rent = update_rent(rent, city.rent_range)
@@ -247,8 +249,9 @@ def relativeError(city, population_array, time_array):
     """
     population_error = 0
     for i in time_array:
-        population_error = population_error + (abs(city.pop_list[i] - population_array[i])
-                                               / abs(city.pop_list[i]))
+        population_error = population_error + abs(city.pop_list[i] - population_array[i])
+    
+    population_error/len(population_array)
     return population_error
 
 
@@ -273,7 +276,7 @@ def runModelTest(city, file_name = None):
         file.close()
 
 # for i in range (10):
-runModelTest(sea)
+runModelTest(chi)
 
 # main(chi, 13)
 # main(la, 13)
