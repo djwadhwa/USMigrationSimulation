@@ -27,6 +27,7 @@ def age_dist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
     # Function returns an array of the child age distributions at each phase of the simulation  
     return temp
 
+
 def natural_pop_growth (population):
     delta_natural_pop = population * rnd.uniform \
     (us.natural_population_growth[0], us.natural_population_growth[1])
@@ -47,6 +48,7 @@ def update_jobs(jobs, job_rate):
     
     return total_jobs
 
+
 def update_crimes(crimes, crime_rate):
     lower_bound = crime_rate[0];
     upper_bound = crime_rate[1];
@@ -57,6 +59,7 @@ def update_crimes(crimes, crime_rate):
     
     return total_crimes
 
+
 def update_rent(rent, rent_rate):
     lower_bound = rent_rate[0];
     upper_bound = rent_rate[1];
@@ -66,7 +69,8 @@ def update_rent(rent, rent_rate):
     total_rent = int(rent + rand_delta)
     
     return total_rent
-    
+  
+      
 def update_taxes(taxes, tax_rate):
     lower_bound = tax_rate[0];
     upper_bound = tax_rate[1];
@@ -109,7 +113,8 @@ def food_consumption(population, adults_rate):
         (population * adults_rate) * 365
     total_annual_calories = annual_calories_children + annual_calories_adults
     return total_annual_calories
-     
+   
+       
 def plotter (city, popualtion_array, water_array, food_array, time_array):
     fig1, ax1 = plt.subplots()
     ax1.plot(time_array, popualtion_array)
@@ -225,7 +230,7 @@ def model(city, time = 20, trials = 100):
         food.append(N.average(food_average[:][i]))
         
     return (city, pop, wat, food, time_array)
-
+    
 
 def absoluteError(city, population_array, time_array):
     """ Function to return the absolute error of a city's population model.
@@ -287,3 +292,6 @@ def runModelTest(city, file_name = None):
         file.write("Absolute Error: ", absolute_error)
         file.write("Relative Error: ", relative_error)
         file.close()
+
+#tester
+runModelTest(sea)
