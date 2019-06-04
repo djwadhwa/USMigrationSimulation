@@ -39,8 +39,9 @@ def natural_pop_growth (population):
 def update_jobs(jobs, job_rate):
     lower_bound = job_rate[0];
     upper_bound = job_rate[1];
-    
-    random_jobs = N.random.uniform(lower_bound ,upper_bound)
+
+    # random_jobs = N.random.uniform(lower_bound ,upper_bound)    
+    random_jobs = N.random.normal(lower_bound ,upper_bound)
     rand_delta = jobs * random_jobs
     total_jobs = int(jobs + rand_delta)
     
@@ -140,7 +141,7 @@ def printer(city, population_array, time_array, file_name = None):
 
 
 def calculate_migrants(free_jobs, crimes, rent, taxes):
-    return 2*free_jobs * (40000/crimes) * (400/rent) * (20*taxes)
+    return 2* free_jobs * (1- taxes) + crimes
 
 
 def model(city, time = 20, trials = 100):
@@ -180,12 +181,11 @@ def model(city, time = 20, trials = 100):
         population_array[0] = city.population
         
         for year in range (1, time):
-            #0.174 
-            free_jobs = total_jobs*.174 + (total_jobs-adults)
+            #0.174 is the amount of jobs that are worked by migrants
+            free_jobs = total_jobs*us.migrant_jobs + (total_jobs-adults)
             migrants = calculate_migrants(free_jobs, crimes, rent, taxes)
             # print (migrants/population_array[year-1])
             # ratio = 1 - (migrants/population_array[year-1])
-            # migrants *= ratio
             population_array[year] = natural_pop_growth(population_array[year-1]) 
             population_array[year] += migrants
             # print (migrants / population)
@@ -205,7 +205,7 @@ def model(city, time = 20, trials = 100):
         water_average.append(water_array)
         food_average.append(food_array)
         
-    for i in range(time-1):
+    for i in range(1, time):
         pop.append(N.average(population_average[:][i]))
         wat.append(N.average(water_average[:][i]))
         food.append(N.average(food_average[:][i]))
@@ -273,7 +273,7 @@ def runModelTest(city, file_name = None):
         file.close()
 
 # for i in range (10):
-runModelTest(ny)
+runModelTest(sea)
 
 # main(chi, 13)
 # main(la, 13)
