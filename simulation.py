@@ -83,14 +83,26 @@ def water_consumption(population, adult_dist):
     
     annual_water_adults = daily_water_adults * (population * adult_dist) * 365
     annual_water_children = daily_water_children * \
-    (population * 1 - adult_dist) * 365
+    (population * (1 - adult_dist)) * 365
     total_annual_water = annual_water_adults + annual_water_children
     
     # return (annual_water_children, annual_water_adults, total_annual_water)
     return total_annual_water
 
-def food(population, child_rate):
-    return 0
+# Return number of calories intake per year total
+# Indicated by age distribution of children and adults 
+def food_consumption(population, adults_rate):
+    #counting calories suggested for children below 18-years-old
+    calories_per_day_children = (1400 + 2000 + 2600 + 3200) / 4
+    #counting calories suggested for adults older than 18
+    calories_per_day_adults = (3000 + 3000 + 2800) / 3
+
+    annual_calories_children = calories_per_day_children * \
+        (population * (1 - adults_rate)) * 365
+    annual_calories_adults = calories_per_day_adults * \
+        (population * adults_rate) * 365
+    total_annual_calories = annual_calories_children + annual_calories_adults
+    return total_annual_calories
     
     
 def plotter (city, popualtion_array, water_array, time_array):
@@ -149,7 +161,9 @@ def model(city, time = 20, trials = 100):
     population_average = []
     pop = []
     wat =[]
+    food = []
     water_average = []
+    food_average = []
     for trial in range(trials):
         adult_dist = city.adults
         adults = city.adults*city.population
@@ -162,6 +176,7 @@ def model(city, time = 20, trials = 100):
         time_array = N.arange(time)
         population_array = N.zeros(time)
         water_array = N.zeros(time)
+        food_array = N.zeros(time)
         population_array[0] = city.population
         
         for year in range (1, time):
@@ -175,7 +190,8 @@ def model(city, time = 20, trials = 100):
             population_array[year] += migrants
             # print (migrants / population)
             #output
-            water_array[year] = int (water_consumption (population_array[year], adult_dist))
+            water_array[year] = water_consumption (population_array[year], adult_dist)
+            food_array[year] = food_consumption (population_array[year], adult_dist)
             
             #update every year
             adult_dist = 1 - age_dist(1-adult_dist)
@@ -187,10 +203,12 @@ def model(city, time = 20, trials = 100):
             
         population_average.append(population_array)
         water_average.append(water_array)
+        food_average.append(food_array)
         
     for i in range(time):
         pop.append(N.average(population_average[:][i]))
         wat.append(N.average(water_average[:][i]))
+        food.append(N.average(food_average[:][i]))
         
     return (city, pop, wat, time_array)
 
