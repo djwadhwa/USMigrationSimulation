@@ -186,25 +186,41 @@ def main(city, time = 20, trials = 100):
 
 def absoluteError(city, population_array, time_array):
     """ Function to return the absolute error of a city's population model.
+
     Absolute error = |correct - result|
 
     Args:
         city:                       The class representing the city being modeled
-        population_array (list):    List of
-        time_array (list):          List of
+        population_array (list):    A list of ints representing population size across years
+        time_array (list):          List of ints representing years which are modeled
 
     Returns:
         population_error (int):     an int representing the absolute error of the model
     """
-    # absolute error = |correct - result|
     population_error = 0
     for i in time_array:
         population_error = population_error + abs(city.pop_list[i] - population_array[i])
     return population_error
 
 
-def relativeError(city, population_array, water_array, time_array, time = 20):
-#
+def relativeError(city, population_array, time_array):
+    """ Function to return the relative error of a city's population model.
+
+    Relative error = |correct - result| / |correct|
+
+    Args:
+        city:                       The class representing the city being modeled
+        population_array (list):    A list of ints representing population size across years
+        time_array (list):          List of ints representing years which are modeled
+
+    Returns:
+        population_error (int):     an int representing the relative error of the model
+    """
+    population_error = 0
+    for i in time_array:
+        population_error = population_error + (abs(city.pop_list[i] - population_array[i])
+                                               / abs(city.pop_list[i]))
+    return population_error
     
 #test
 # print ("\nChild age distribution:\n", childAgeDist(sea.children)*100)
