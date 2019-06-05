@@ -55,7 +55,7 @@ def update_crimes(crimes, crime_rate):
     lower_bound = crime_rate[0];
     upper_bound = crime_rate[1];
 
-    random_crimes = N.random.binomial(lower_bound ,upper_bound)
+    random_crimes = N.random.uniform(lower_bound ,upper_bound)
     rand_delta = crimes * random_crimes
     total_crimes = int(crimes + rand_delta)
 
