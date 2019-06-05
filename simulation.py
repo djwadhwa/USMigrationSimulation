@@ -7,7 +7,7 @@ import Seattle as sea
 import Chicago as chi
 import LosAngeles as la
 import NewYork as ny
-import us 
+import us
 
 #store the number of years to simulate for
 time = 13
@@ -16,91 +16,90 @@ time = 13
 # Child age dist should be between 0.13 and 0.25
 def age_dist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
     rand = rnd.uniform(-0.02, 0.02)
-    
+
     # Keep child age dist between 0.13 and 0.25
     temp = prev_child_percentage + rand
     if temp > upper_bound:
         temp = min(temp, upper_bound)
     elif temp < lower_bound:
         temp = max(temp, lower_bound)
-    
-    # Function returns an array of the child age distributions at each phase of the simulation  
+
+    # Function returns an array of the child age distributions at each phase of the simulation
     return temp
 
 
 def natural_pop_growth (population):
     delta_natural_pop = population * rnd.uniform \
     (us.natural_population_growth[0], us.natural_population_growth[1])
-    
+
     total_natural_pop = population + delta_natural_pop
-    
+
     return total_natural_pop
-    
+
 # Job distribution increases at about 2% to 2.5% a year.
 def update_jobs(jobs, job_rate):
     lower_bound = job_rate[0];
     upper_bound = job_rate[1];
 
     random_jobs = N.random.normal(lower_bound ,upper_bound)
-    random_jobs = N.random.binomial(lower_bound, upper_bound)
     rand_delta = jobs * random_jobs
     total_jobs = int(jobs + rand_delta)
-    
+
     return total_jobs
 
 
 def update_crimes(crimes, crime_rate):
     lower_bound = crime_rate[0];
     upper_bound = crime_rate[1];
-    
+
     random_crimes = N.random.binomial(lower_bound ,upper_bound)
     rand_delta = crimes * random_crimes
     total_crimes = int(crimes + rand_delta)
-    
+
     return total_crimes
 
 
 def update_rent(rent, rent_rate):
     lower_bound = rent_rate[0];
     upper_bound = rent_rate[1];
-    
+
     random_rent = N.random.normal(lower_bound ,upper_bound)
     rand_delta = rent * random_rent
     total_rent = int(rent + rand_delta)
-    
+
     return total_rent
-  
-      
+
+
 def update_taxes(taxes, tax_rate):
     lower_bound = tax_rate[0];
     upper_bound = tax_rate[1];
-    
+
     random_taxes = N.random.uniform(lower_bound ,upper_bound)
     rand_delta = taxes * random_taxes
     total_taxes = taxes + rand_delta
-     
+
     return total_taxes
 
 # Return number of litres of water that would be drunk annually by a population
 # of theindicated size, with the indicated distribution of children and adults
 def water_consumption(population, adult_dist):
-    
+
     adult_dist = 1 - age_dist(1-adult_dist)
     daily_water_children= ( 7 + 10 + 14 ) / 3 * 0.236 * 0.264172     #in gallons
     daily_water_adults= 3.7 * 0.264172                           #in gallons
-    
+
     annual_water_adults = daily_water_adults * (population * adult_dist) * 365
     annual_water_children = daily_water_children * \
     (population * (1 - adult_dist)) * 365
     total_annual_water = annual_water_adults + annual_water_children
-    
+
     # return (annual_water_children, annual_water_adults, total_annual_water)
     return total_annual_water
 
 # Return number of calories intake per year total
-# Indicated by age distribution of children and adults 
+# Indicated by age distribution of children and adults
 def food_consumption(population, adults_rate):
-    
+
     adults_rate = 1 - age_dist(1-adults_rate)
     #counting calories suggested for children below 18-years-old
     calories_per_day_children = (1400 + 2000 + 2600 + 3200) / 4
@@ -113,25 +112,25 @@ def food_consumption(population, adults_rate):
         (population * adults_rate) * 365
     total_annual_calories = annual_calories_children + annual_calories_adults
     return total_annual_calories
-   
-       
+
+
 def plotter (city, pop_array, water_array, food_array, time_array):
     fig1, ax1 = plt.subplots()
     ax1.plot(time_array, pop_array)
     ax1.plot (N.arange(14), city.pop_list)
-    ax1.set_title(city.Name + "'s population growth due to migration over "+  
+    ax1.set_title(city.Name + "'s population growth due to migration over "+
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Population")
     fig2, ax1 = plt.subplots()
     ax1.plot(time_array[1:], water_array[1:])
-    ax1.set_title(city.Name + "'s water consumption over "+  
+    ax1.set_title(city.Name + "'s water consumption over "+
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Water consumed (100 million gallons)")
     fig3, ax1 = plt.subplots()
     ax1.plot(time_array[1:], food_array[1:])
-    ax1.set_title(city.Name + "'s food consumption over "+  
+    ax1.set_title(city.Name + "'s food consumption over "+
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Food consumed (100 billion consumed)")
@@ -195,19 +194,15 @@ def model(city, time = 20, trials = 100):
         water_array = N.zeros(time)
         food_array = N.zeros(time)
         population_array[0] = city.population
-        
-        #0.174 is the amount of jobs that are worked by migrants
-        for year in range (1, time):     
-            free_jobs = total_jobs*us.migrant_jobs
-        free_jobs = total_jobs*us.migrant_jobs
-        for year in range (1, time):
 
-            # Calculate new migrants based on factors
+        #0.174 is the amount of jobs that are worked by migrants
+        for year in range (1, time):
+            free_jobs = total_jobs*us.migrant_jobs
             migrants = calculate_migrants(city, free_jobs, crimes, rent, taxes)
             # Account for natural growth
             population_array[year] = natural_pop_growth(population_array[year-1])
             population_array[year] += migrants
-              
+
             # Update factors every year
             adult_dist = 1 - age_dist(1-adult_dist)
             total_jobs = update_jobs(total_jobs, city.job_range)
@@ -218,17 +213,11 @@ def model(city, time = 20, trials = 100):
             #output
             water_array[year] = water_consumption (population_array[year-1], adult_dist)
             food_array[year] = food_consumption (population_array[year-1], adult_dist)
-            free_jobs = total_jobs*us.migrant_jobs
-            
-            # Output
-            second_dist = 1 - age_dist(adult_dist)
-            water_array[year] = water_consumption (population_array[year], second_dist)
-            food_array[year] = food_consumption (population_array[year], second_dist)
-            
+
         population_average.append(population_array)
         water_average.append(water_array)
         food_average.append(food_array)
-    
+
     for i in range(trials):
         for j in range(time):
             pop[j]+= population_average[i][j]
@@ -238,7 +227,7 @@ def model(city, time = 20, trials = 100):
     wat /= trials
     food /=trials
     return (city, pop, wat, food, time_array)
-    
+
 
 def absoluteError(city, population_array, time_array):
     """ Function to return the absolute error of a city's population model.
@@ -276,7 +265,7 @@ def relativeError(city, population_array, time_array):
     population_error = 0
     for i in time_array:
         population_error = population_error + abs(city.pop_list[i] - population_array[i]) /abs (population_array[i])
-    
+
     population_error /= len (population_array)
     return population_error
 
