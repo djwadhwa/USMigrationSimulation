@@ -36,6 +36,8 @@ def natural_pop_growth (population):
 
     return total_natural_pop
 
+# Update the jobs by using the current jobs used
+# and the tax rate based on the city
 # Job distribution increases at about 2% to 2.5% a year.
 def update_jobs(jobs, job_rate):
     lower_bound = job_rate[0];
@@ -47,7 +49,8 @@ def update_jobs(jobs, job_rate):
 
     return total_jobs
 
-
+# Update the crime by using the current crimes used
+# and the crime rate based on the city
 def update_crimes(crimes, crime_rate):
     lower_bound = crime_rate[0];
     upper_bound = crime_rate[1];
@@ -58,7 +61,8 @@ def update_crimes(crimes, crime_rate):
 
     return total_crimes
 
-
+# Update the rent by using the current rent used
+# and the rent rate based on the city
 def update_rent(rent, rent_rate):
     lower_bound = rent_rate[0];
     upper_bound = rent_rate[1];
@@ -69,7 +73,8 @@ def update_rent(rent, rent_rate):
 
     return total_rent
 
-
+# Update the taxes by using the current taxes used
+# and the tax rate based on the city
 def update_taxes(taxes, tax_rate):
     lower_bound = tax_rate[0];
     upper_bound = tax_rate[1];
@@ -206,7 +211,7 @@ def model(city, time = 20, trials = 100):
             # Update factors every year
             adult_dist = 1 - age_dist(1-adult_dist)
             total_jobs = update_jobs(total_jobs, city.job_range)
-            crimes = update_crimes(crimes,city.crimes_range )
+            crimes = update_crimes(crimes, city.crimes_range )
             rent = update_rent(rent, city.rent_range)
             taxes = update_taxes (taxes, city.taxes_range)
 
