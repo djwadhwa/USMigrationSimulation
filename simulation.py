@@ -77,7 +77,7 @@ def update_taxes(taxes, tax_rate):
     random_taxes = N.random.uniform(lower_bound ,upper_bound)
     rand_delta = taxes * random_taxes
     total_taxes = taxes + rand_delta
-    
+     
     return total_taxes
 
 # Return number of litres of water that would be drunk annually by a population
