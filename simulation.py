@@ -41,7 +41,7 @@ def update_jobs(jobs, job_rate):
     lower_bound = job_rate[0];
     upper_bound = job_rate[1];
 
-    random_jobs = N.random.binomial(lower_bound ,upper_bound)
+    random_jobs = N.random.normal(lower_bound ,upper_bound)
     rand_delta = jobs * random_jobs
     total_jobs = int(jobs + rand_delta)
     
@@ -114,22 +114,22 @@ def food_consumption(population, adults_rate):
     return total_annual_calories
    
        
-def plotter (city, popualtion_array, water_array, food_array, time_array):
+def plotter (city, pop_array, water_array, food_array, time_array):
     fig1, ax1 = plt.subplots()
-    ax1.plot(time_array, popualtion_array)
+    ax1.plot(time_array, pop_array)
     ax1.plot (N.arange(14), city.pop_list)
     ax1.set_title(city.Name + "'s population growth due to migration over "+  
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Population")
     fig2, ax1 = plt.subplots()
-    ax1.plot(time_array, water_array)
+    ax1.plot(time_array[1:], water_array[1:])
     ax1.set_title(city.Name + "'s water consumption over "+  
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Water consumed (100 million gallons)")
-    fig2, ax1 = plt.subplots()
-    ax1.plot(time_array, food_array)
+    fig3, ax1 = plt.subplots()
+    ax1.plot(time_array[1:], food_array[1:])
     ax1.set_title(city.Name + "'s food consumption over "+  
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
@@ -155,11 +155,11 @@ def printer(city, population_array, time_array, file_name = None):
 
 def calculate_migrants(city, free_jobs, crimes, rent, taxes):
     if (city == sea):
-        return 0.5*free_jobs - (10/taxes) - 0.25*crimes - 0.8*rent
+        return 0.4*free_jobs - (10/taxes)- 0.25*crimes - 0.8*rent
     elif(city == chi):
         return 0.2*free_jobs - (100/taxes) - 0.45*crimes - 0.8*rent
     else:
-        return free_jobs - (1000/taxes) - 2*crimes - 40*rent
+        return 0.35*free_jobs - (100/taxes) - .45*crimes - 40*rent
 
 
 def model(city, time = 20, trials = 100):
@@ -177,17 +177,13 @@ def model(city, time = 20, trials = 100):
         time_array (List)   A list of ints representing years which are modeled
     """
     population_average = []
-    pop = []
-    pop.append(city.population)
-    wat =[]
-    wat.append(water_consumption(city.population, city.adults))
-    food = []
-    food.append(food_consumption(city.population, city.adults))
+    pop = N.zeros(time)
+    wat = N.zeros(time)
+    food = N.zeros(time)
     water_average = []
     food_average = []
     for trial in range(trials):
         adult_dist = city.adults
-        
         total_jobs = city.jobs
         crimes = city.crimes
         rent = city.rent
@@ -198,10 +194,10 @@ def model(city, time = 20, trials = 100):
         water_array = N.zeros(time)
         food_array = N.zeros(time)
         population_array[0] = city.population
+        
         #0.174 is the amount of jobs that are worked by migrants
-        free_jobs = total_jobs*us.migrant_jobs
         for year in range (1, time):     
-            
+            free_jobs = total_jobs*us.migrant_jobs
             migrants = calculate_migrants(city, free_jobs, crimes, rent, taxes)
             population_array[year] = natural_pop_growth(population_array[year-1]) 
             population_array[year] += migrants
@@ -212,22 +208,23 @@ def model(city, time = 20, trials = 100):
             crimes = update_crimes(crimes,city.crimes_range )
             rent = update_rent(rent, city.rent_range)
             taxes = update_taxes (taxes, city.taxes_range)
-            free_jobs = total_jobs*us.migrant_jobs
-            
+
             #output
-            second_dist = 1 - age_dist(adult_dist)
-            water_array[year] = water_consumption (population_array[year], second_dist)
-            food_array[year] = food_consumption (population_array[year], second_dist)
+            water_array[year] = water_consumption (population_array[year-1], adult_dist)
+            food_array[year] = food_consumption (population_array[year-1], adult_dist)
             
         population_average.append(population_array)
         water_average.append(water_array)
         food_average.append(food_array)
-        
-    for i in range(0, time-1):
-        pop.append(N.average(population_average[:][i]))
-        wat.append(N.average(water_average[:][i]))
-        food.append(N.average(food_average[:][i]))
-        
+    
+    for i in range(trials):
+        for j in range(time):
+            pop[j]+= population_average[i][j]
+            wat[j]+=water_average[i][j]
+            food[j]+=food_average[i][j]
+    pop /= trials
+    wat /= trials
+    food /=trials
     return (city, pop, wat, food, time_array)
     
 
