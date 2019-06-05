@@ -10,7 +10,7 @@ import NewYork as ny
 import us
 
 #store the number of years to simulate for
-time = 13
+DEFAULT_NUM_YEARS = 13
 
 # Function returns an array of the child age distributions at each phase of the simulation
 # Child age dist should be between 0.13 and 0.25
@@ -122,7 +122,13 @@ def food_consumption(population, adults_rate):
 def plotter (city, pop_array, water_array, food_array, time_array):
     fig1, ax1 = plt.subplots()
     ax1.plot(time_array, pop_array)
-    ax1.plot (time_array, city.pop_list)
+
+    # Make copy of city.pop_list, but of the desired size
+    city_pop_list = N.zeros(len(time_array))
+    for i in range(0, len(city_pop_list)):
+        city_pop_list[i] = city.pop_list[i]
+
+    ax1.plot (time_array, city_pop_list)
     ax1.set_title(city.Name + "'s population growth due to migration over "+
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
@@ -147,15 +153,15 @@ def plotter (city, pop_array, water_array, food_array, time_array):
 def printer(city, population_array, time_array, file_name = None):
     # If outputting to stdout
     if(file_name == None):
-        print (city.Name+"s poulation over " + str(len(time_array)) + "years")
-        for year in time_array:
-            print (2006+year, "\t", population_array[year] )
+        print (city.Name+"'s population over " + str(len(time_array)) + " years")
+        for i in range(0, len(time_array)-1):
+            print (time_array[i], "\t", population_array[i] )
     # If writing to a file
     else:
         file = open(file_name, "w")
-        file.write(city.Name+"s poulation over " + str(len(time_array)) + "years")
+        file.write(city.Name+"'s population over " + str(len(time_array)) + " years")
         for year in time_array:
-            line = str(2006+year, "\t", str(population_array[year]) )
+            line = str(year, "\t", str(population_array[year]) )
             file.write(line)
         file.close()
 
@@ -169,12 +175,12 @@ def calculate_migrants(city, free_jobs, crimes, rent, taxes):
         return 0.35*free_jobs - (100/taxes) - .45*crimes - 40*rent
 
 
-def model(city, time = 20, trials = 100):
+def model(city, num_years = 20, trials = 100):
     """ Run the model on a city, predict yearly population and water.
 
     Args:
         city:               The class representing the city being modeled
-        time (int):         Number of years over which to run the model
+        num_years (int):         Number of years over which to run the model
         trials (int):       Number of trials for which to run the model
 
     Returns:
@@ -184,12 +190,17 @@ def model(city, time = 20, trials = 100):
         time_array (List)   A list of ints representing years which are modeled
     """
     population_average = []
-    pop = N.zeros(time)
-    wat = N.zeros(time)
-    food = N.zeros(time)
+    pop = N.zeros(num_years)
+    wat = N.zeros(num_years)
+    food = N.zeros(num_years)
     water_average = []
     food_average = []
-    time_array = N.array(city.year_list)
+
+    # Make copy of city.year_list, but of the desired size
+    year_list = N.zeros(num_years)
+    for i in range(num_years):
+        year_list[i] = city.year_list[i]
+
     for trial in range(trials):
         adult_dist = city.adults
         total_jobs = city.jobs
@@ -197,18 +208,18 @@ def model(city, time = 20, trials = 100):
         rent = city.rent
         taxes = city.taxes
 
-        population_array = N.zeros(time)
-        water_array = N.zeros(time)
-        food_array = N.zeros(time)
+        population_array = N.zeros(num_years)
+        water_array = N.zeros(num_years)
+        food_array = N.zeros(num_years)
         population_array[0] = city.population
 
         #0.174 is the amount of jobs that are worked by migrants
-        for year in range (1, time):
+        for i in range (1, num_years):
             free_jobs = total_jobs*us.migrant_jobs
             migrants = calculate_migrants(city, free_jobs, crimes, rent, taxes)
             # Account for natural growth
-            population_array[year] = natural_pop_growth(population_array[year-1])
-            population_array[year] += migrants
+            population_array[i] = natural_pop_growth(population_array[i-1])
+            population_array[i] += migrants
 
             # Update factors every year
             adult_dist = 1 - age_dist(1-adult_dist)
@@ -218,22 +229,22 @@ def model(city, time = 20, trials = 100):
             taxes = update_taxes (taxes, city.taxes_range)
 
             #output
-            water_array[year] = water_consumption (population_array[year-1], adult_dist)
-            food_array[year] = food_consumption (population_array[year-1], adult_dist)
+            water_array[i] = water_consumption (population_array[i-1], adult_dist)
+            food_array[i] = food_consumption (population_array[i-1], adult_dist)
 
         population_average.append(population_array)
         water_average.append(water_array)
         food_average.append(food_array)
 
     for i in range(trials):
-        for j in range(time):
+        for j in range(num_years):
             pop[j]+= population_average[i][j]
             wat[j]+=water_average[i][j]
             food[j]+=food_average[i][j]
     pop /= trials
     wat /= trials
     food /= trials
-    return (city, pop, wat, food, time_array)
+    return (city, pop, wat, food, year_list)
 
 
 def absoluteError(city, population_array, time_array):
@@ -250,7 +261,7 @@ def absoluteError(city, population_array, time_array):
         population_error (int):     an int representing the absolute error of the model
     """
     population_error = 0
-    for i in range(len(time_array)):
+    for i in range(len(time_array)-1):
         population_error = population_error + abs(city.pop_list[i] - population_array[i])
     population_error /= len (population_array)
     return population_error
@@ -270,15 +281,15 @@ def relativeError(city, population_array, time_array):
         population_error (int):     an int representing the relative error of the model
     """
     population_error = 0
-    for i in range(len(time_array)):
+    for i in range(len(time_array)-1):
         population_error = population_error + abs(city.pop_list[i] - population_array[i]) /abs (population_array[i])
 
     population_error /= len (population_array)
     return population_error
 
 
-def runModelTest(city, file_name = None): 
-    (city, pop, wat, food, time_array) = model(city, time)
+def runModelTest(city, file_name = None, num_years = DEFAULT_NUM_YEARS):
+    (city, pop, wat, food, time_array) = model(city, num_years)
     # Calculate error
     absolute_error = absoluteError(city, pop, time_array)
     relative_error = relativeError(city, pop, time_array)
