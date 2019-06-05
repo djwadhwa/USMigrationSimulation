@@ -155,13 +155,13 @@ def printer(city, population_array, time_array, file_name = None):
     if(file_name == None):
         print (city.Name+"'s population over " + str(len(time_array)) + " years")
         for i in range(0, len(time_array)-1):
-            print (time_array[i], "\t", population_array[i] )
+            print (time_array[i], "\t", int(population_array[i]) )
     # If writing to a file
     else:
         file = open(file_name, "w")
         file.write(city.Name+"'s population over " + str(len(time_array)) + " years")
         for year in time_array:
-            line = str(year, "\t", str(population_array[year]) )
+            line = str(year, "\t", str(int(population_array[year])))
             file.write(line)
         file.close()
 
@@ -185,7 +185,7 @@ def calculate_migrants(city, free_jobs, crimes, rent, taxes):
     elif(city == chi):
         return 0.2*free_jobs - (100/taxes) - 0.45*crimes - 0.8*rent
     else:
-        return 0.35*free_jobs - (100/taxes) - .45*crimes - 40*rent
+        return 0.45*free_jobs - (100/taxes) - 0.8*crimes - 40*rent
 
 
 def model(city, num_years = DEFAULT_NUM_YEARS, trials = 100):
