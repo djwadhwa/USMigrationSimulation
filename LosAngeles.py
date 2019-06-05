@@ -6,6 +6,7 @@ children = 0.213       # Portion of population which is under 18 y.o.
 adults = 1- children    # Portion of population which is over 18 y.o.
 povertyRate = 0.204
 
+year_list = []
 crimes_list = []
 rent_list = []
 taxes_list = []
@@ -16,6 +17,7 @@ with open ("los_angeles_data.csv") as csv_file:
     read_csv = csv.reader (csv_file, delimiter =',')
     
     for row in read_csv:
+        year_list.append(int (row [0]))
         rent_list.append(int (row [1]))
         taxes_list.append(float (row [2]))
         crimes_list.append(int (row [3]))
