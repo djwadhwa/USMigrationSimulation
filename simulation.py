@@ -189,6 +189,7 @@ def model(city, time = 20, trials = 100):
     food = N.zeros(time)
     water_average = []
     food_average = []
+    time_array = N.array(city.year_list)
     for trial in range(trials):
         adult_dist = city.adults
         total_jobs = city.jobs
@@ -196,7 +197,6 @@ def model(city, time = 20, trials = 100):
         rent = city.rent
         taxes = city.taxes
 
-        time_array = city.year_list
         population_array = N.zeros(time)
         water_array = N.zeros(time)
         food_array = N.zeros(time)
