@@ -127,12 +127,14 @@ def plotter (city, pop_array, water_array, food_array, time_array):
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Population")
+
     fig2, ax1 = plt.subplots()
     ax1.plot(time_array[1:], water_array[1:])
     ax1.set_title(city.Name + "'s water consumption over "+
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
     ax1.set_ylabel("Water consumed (100 million gallons)")
+
     fig3, ax1 = plt.subplots()
     ax1.plot(time_array[1:], food_array[1:])
     ax1.set_title(city.Name + "'s food consumption over "+
@@ -230,7 +232,7 @@ def model(city, time = 20, trials = 100):
             food[j]+=food_average[i][j]
     pop /= trials
     wat /= trials
-    food /=trials
+    food /= trials
     return (city, pop, wat, food, time_array)
 
 
