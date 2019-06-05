@@ -122,7 +122,7 @@ def food_consumption(population, adults_rate):
 def plotter (city, pop_array, water_array, food_array, time_array):
     fig1, ax1 = plt.subplots()
     ax1.plot(time_array, pop_array)
-    ax1.plot (N.arange(14), city.pop_list)
+    ax1.plot (time_array, city.pop_list)
     ax1.set_title(city.Name + "'s population growth due to migration over "+
     str(len(time_array))+" years")
     ax1.set_xlabel("Time (years)")
@@ -250,7 +250,7 @@ def absoluteError(city, population_array, time_array):
         population_error (int):     an int representing the absolute error of the model
     """
     population_error = 0
-    for i in time_array:
+    for i in range(len(time_array)):
         population_error = population_error + abs(city.pop_list[i] - population_array[i])
     population_error /= len (population_array)
     return population_error
@@ -270,7 +270,7 @@ def relativeError(city, population_array, time_array):
         population_error (int):     an int representing the relative error of the model
     """
     population_error = 0
-    for i in time_array:
+    for i in range(len(time_array)):
         population_error = population_error + abs(city.pop_list[i] - population_array[i]) /abs (population_array[i])
 
     population_error /= len (population_array)
