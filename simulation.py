@@ -270,7 +270,7 @@ def relativeError(city, population_array, time_array):
     return population_error
 
 
-def runModelTest(city, file_name = None):
+def runModelTest(city, file_name = None): 
     (city, pop, wat, food, time_array) = model(city, time)
     # Calculate error
     absolute_error = absoluteError(city, pop, time_array)
