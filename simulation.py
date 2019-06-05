@@ -41,8 +41,7 @@ def update_jobs(jobs, job_rate):
     lower_bound = job_rate[0];
     upper_bound = job_rate[1];
 
-    # random_jobs = N.random.uniform(lower_bound ,upper_bound)    
-    random_jobs = N.random.normal(lower_bound ,upper_bound)
+    random_jobs = N.random.binomial(lower_bound ,upper_bound)
     rand_delta = jobs * random_jobs
     total_jobs = int(jobs + rand_delta)
     
