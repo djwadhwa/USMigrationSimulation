@@ -196,7 +196,7 @@ def model(city, time = 20, trials = 100):
         rent = city.rent
         taxes = city.taxes
 
-        time_array = N.arange(time)
+        time_array = city.year_list
         population_array = N.zeros(time)
         water_array = N.zeros(time)
         food_array = N.zeros(time)
