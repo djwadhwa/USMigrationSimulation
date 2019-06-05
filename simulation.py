@@ -12,23 +12,49 @@ import us
 #store the number of years to simulate for
 DEFAULT_NUM_YEARS = 13
 
-# Function returns an array of the child age distributions at each phase of the simulation
-# Child age dist should be between 0.13 and 0.25
+
 def age_dist(prev_child_percentage, lower_bound = 0.13, upper_bound = 0.25):
+    """ Calculate a prediction for the age distribution of children in the
+    population in the next year.
+
+    Args:
+        prev_child_percentage (int):The current child age distribution in the
+                                    city
+        lower_bound (float):        The lower bound for the possible age
+                                    distribution of children in the population
+        upper_bound (float):        The upper bound for the possible age
+                                    distribution of children in the population
+
+    Returns:
+        new_child_age_dist (float): The predicted new child age distribution in
+                                    the city
+    """
     rand = rnd.uniform(-0.02, 0.02)
 
     # Keep child age dist between 0.13 and 0.25
-    temp = prev_child_percentage + rand
-    if temp > upper_bound:
-        temp = min(temp, upper_bound)
-    elif temp < lower_bound:
-        temp = max(temp, lower_bound)
+    new_child_age_dist = prev_child_percentage + rand
+    if new_child_age_dist > upper_bound:
+        new_child_age_dist = min(new_child_age_dist, upper_bound)
+    elif new_child_age_dist < lower_bound:
+        new_child_age_dist = max(new_child_age_dist, lower_bound)
 
     # Function returns an array of the child age distributions at each phase of the simulation
-    return temp
+    return new_child_age_dist
 
 
 def natural_pop_growth (population):
+    """ Calculate a prediction for how much the population naturally grows
+    within a year.
+
+    Prediction based on official rates of US national population growth
+
+    Args:
+        population (int):           The current population of the city
+
+    Returns:
+        total_natural_pop (int):    The predicted new population after
+                                    natural growth
+    """
     delta_natural_pop = population * rnd.uniform \
     (us.natural_population_growth[0], us.natural_population_growth[1])
 
@@ -36,12 +62,24 @@ def natural_pop_growth (population):
 
     return total_natural_pop
 
-# Update the jobs by using the current jobs used
-# and the tax rate based on the city
-# Job distribution increases at about 2% to 2.5% a year.
-def update_jobs(jobs, job_rate):
-    lower_bound = job_rate[0];
-    upper_bound = job_rate[1];
+
+def update_jobs(jobs, job_range):
+    """ Calculate a prediction for the next year's number of jobs based on the
+    current number of jobs, and the city's job range.
+
+    Prediction made using monte carlo method.
+
+    Args:
+        jobs (float):           The current number of jobs in the city
+        job_range (List):       A List of 2 values representing the upper and
+                                lower bounds of the percentage by which jobs
+                                increase yearly
+
+    Returns:
+        total_jobs (float):     The predicted new number of jobs in the city
+    """
+    lower_bound = job_range[0];
+    upper_bound = job_range[1];
 
     random_jobs = N.random.normal(lower_bound ,upper_bound)
     rand_delta = jobs * random_jobs
@@ -49,11 +87,23 @@ def update_jobs(jobs, job_rate):
 
     return total_jobs
 
-# Update the crime by using the current crimes used
-# and the crime rate based on the city
-def update_crimes(crimes, crime_rate):
-    lower_bound = crime_rate[0];
-    upper_bound = crime_rate[1];
+
+def update_crimes(crimes, crime_range):
+    """ Calculate a prediction for the next year's crime rate based on the
+    current crime rate, and the city's crime range.
+
+    Prediction made using monte carlo method.
+
+    Args:
+        crimes (float):         The current tax rate of the city
+        crime_range (List):     A List of 2 values representing the upper and
+                                lower bounds of that city's crime range.
+
+    Returns:
+        total_crimes (float):   The predicted new crime rate for the city
+    """
+    lower_bound = crime_range[0];
+    upper_bound = crime_range[1];
 
     random_crimes = N.random.uniform(lower_bound ,upper_bound)
     rand_delta = crimes * random_crimes
@@ -61,11 +111,23 @@ def update_crimes(crimes, crime_rate):
 
     return total_crimes
 
-# Update the rent by using the current rent used
-# and the rent rate based on the city
-def update_rent(rent, rent_rate):
-    lower_bound = rent_rate[0];
-    upper_bound = rent_rate[1];
+
+def update_rent(rent, rent_range):
+    """ Calculate a prediction for the next year's average rent based on the
+    current rent, and the city's rent range.
+
+    Prediction made using monte carlo method.
+
+    Args:
+        rent (float):          The current tax rate of the city
+        rent_range (List):       A List of 2 values representing the upper and
+                                lower bounds of that city's rent.
+
+    Returns:
+        total_rent (float):    The predicted new average rent for the city
+    """
+    lower_bound = rent_range[0];
+    upper_bound = rent_range[1];
 
     random_rent = N.random.normal(lower_bound ,upper_bound)
     rand_delta = rent * random_rent
@@ -73,11 +135,23 @@ def update_rent(rent, rent_rate):
 
     return total_rent
 
-# Update the taxes by using the current taxes used
-# and the tax rate based on the city
-def update_taxes(taxes, tax_rate):
-    lower_bound = tax_rate[0];
-    upper_bound = tax_rate[1];
+
+def update_taxes(taxes, tax_range):
+    """ Calculate a prediction for the next year's tax rate based on the
+    current tax rate, and the city's tax range.
+
+    Prediction made using monte carlo method.
+
+    Args:
+        taxes (float):          The current tax rate of the city
+        tax_range (List):       A List of 2 values representing the upper and
+                                lower bounds of that city's taxes.
+
+    Returns:
+        total_taxes (float):    The predicted new tax rate for the city
+    """
+    lower_bound = tax_range[0];
+    upper_bound = tax_range[1];
 
     random_taxes = N.random.uniform(lower_bound ,upper_bound)
     rand_delta = taxes * random_taxes
@@ -85,9 +159,23 @@ def update_taxes(taxes, tax_rate):
 
     return total_taxes
 
-# Return number of litres of water that would be drunk annually by a population
-# of theindicated size, with the indicated distribution of children and adults
+
 def water_consumption(population, adult_dist):
+    """ Based on the given factors, calculate a prediction for the yearly
+    water intake in the city.
+
+    Yearly water intake is indicated by the city's age distribution of
+    children and adults.
+
+    Args:
+        population (int):               The population size of the city
+        adults_dist (float):            Fraction of the city's population which
+                                        is 18+ years of age
+
+    Returns:
+        total_annual_water (int):       The predicted number of litres of water
+                                        consumed yearly in the city
+    """
 
     adult_dist = 1 - age_dist(1-adult_dist)
     daily_water_children= ( 7 + 10 + 14 ) / 3 * 0.236 * 0.264172     #in gallons
@@ -103,7 +191,24 @@ def water_consumption(population, adult_dist):
 
 # Return number of calories intake per year total
 # Indicated by age distribution of children and adults
+
+
 def food_consumption(population, adults_rate):
+    """ Based on the given factors, calculate a prediction for the yearly
+    caloric intake in the city.
+
+    Yearly caloric intake is indicated by the city's age distribution of
+    children and adults.
+
+    Args:
+        population (int):               The population size of the city
+        adults_rate (float):            Fraction of the city's population which
+                                        is 18+ years of age
+
+    Returns:
+        total_annual_calories (int):    The predicted number of calories
+                                        consumed yearly in the city
+    """
 
     adults_rate = 1 - age_dist(1-adults_rate)
     #counting calories suggested for children below 18-years-old
@@ -120,6 +225,16 @@ def food_consumption(population, adults_rate):
 
 
 def plotter (city, pop_array, water_array, food_array, time_array):
+    """ Plot the population across years as predicted by the model, alongside
+    the actual population values from the data.
+
+    Args:
+        city:                   The class representing the city being modeled
+        pop_array (List):       Population values as predicted by the model
+        water_array (List):     Water values as predicted by the model
+        food_array (List):      Food values as predicted by the model
+        time_array (List):      Year values for the model
+    """
     fig1, ax1 = plt.subplots()
     ax1.plot(time_array, pop_array)
 
@@ -150,15 +265,23 @@ def plotter (city, pop_array, water_array, food_array, time_array):
     plt.show()
 
 
-def printer(city, population_array, time_array, file_name = None):
+def printer(city, population_array, time_array, output_file_name = None):
+    """ Print the population across years as predicted by the model.
+
+    Args:
+        city:                   The class representing the city being modeled
+        population_array (List):Population values as predicted by the model
+        time_array (List):      Year values for the model
+        output_file_name (str): The file to which output should be written
+    """
     # If outputting to stdout
-    if(file_name == None):
+    if(output_file_name == None):
         print (city.Name+"'s population over " + str(len(time_array)) + " years")
         for i in range(0, len(time_array)-1):
             print (time_array[i], "\t", population_array[i] )
     # If writing to a file
     else:
-        file = open(file_name, "w")
+        file = open(output_file_name, "w")
         file.write(city.Name+"'s population over " + str(len(time_array)) + " years")
         for year in time_array:
             line = str(year, "\t", str(population_array[year]) )
@@ -172,13 +295,13 @@ def calculate_migrants(city, free_jobs, crimes, rent, taxes):
 
     Args:
         city:               The class representing the city being modeled
-        free_jobs (int):    Number of available jobs this year in the city
-        crimes (int):       Number of crimes committed this year in the city
-        rent (int):         Average rent cost this year in the city
-        taxes (int):        Average tax this year in the city
+        free_jobs (float):  Number of available jobs this year in the city
+        crimes (float):     Number of crimes committed this year in the city
+        rent (float):       Average rent cost this year in the city
+        taxes (float):      Average tax this year in the city
 
     Returns:
-        A float 
+        A float
     """
     if (city == sea):
         return 0.4*free_jobs - (10/taxes)- 0.25*crimes - 0.8*rent
