@@ -167,6 +167,19 @@ def printer(city, population_array, time_array, file_name = None):
 
 
 def calculate_migrants(city, free_jobs, crimes, rent, taxes):
+    """ Based on the given factors, calculate a prediction for the number of
+    incoming migrants to the city.
+
+    Args:
+        city:               The class representing the city being modeled
+        free_jobs (int):    Number of available jobs this year in the city
+        crimes (int):       Number of crimes committed this year in the city
+        rent (int):         Average rent cost this year in the city
+        taxes (int):        Average tax this year in the city
+
+    Returns:
+        A float 
+    """
     if (city == sea):
         return 0.4*free_jobs - (10/taxes)- 0.25*crimes - 0.8*rent
     elif(city == chi):
@@ -175,7 +188,7 @@ def calculate_migrants(city, free_jobs, crimes, rent, taxes):
         return 0.35*free_jobs - (100/taxes) - .45*crimes - 40*rent
 
 
-def model(city, num_years = 20, trials = 100):
+def model(city, num_years = DEFAULT_NUM_YEARS, trials = 100):
     """ Run the model on a city, predict yearly population and water.
 
     Args:
@@ -288,25 +301,35 @@ def relativeError(city, population_array, time_array):
     return population_error
 
 
-def runModelTest(city, file_name = None, num_years = DEFAULT_NUM_YEARS):
-    (city, pop, wat, food, time_array) = model(city, num_years)
+def runModelTest(city, output_file_name = None, num_years = DEFAULT_NUM_YEARS, trials = 100):
+    """ Function to run the model, calculate absolute & relative errors, and output the results
+    in both text and a graph.
+
+    Args:
+        city:                   The class representing the city being modeled
+        output_file_name (str): The file to which output should be written
+        num_years (int):        Number of years over which the model should run
+        trials (int):           Number of trials for which the model should run
+    """
+    (city, pop, wat, food, time_array) = model(city, num_years, trials)
     # Calculate error
     absolute_error = absoluteError(city, pop, time_array)
     relative_error = relativeError(city, pop, time_array)
     # Print output
-    printer (city, pop, time_array, file_name)
+    printer (city, pop, time_array, output_file_name)
     # Plot graph
     plotter (city, pop, wat, food, time_array)
     # If outputting to stdout
-    if(file_name == None):
+    if(output_file_name == None):
         print("Absolute Error: ", absolute_error)
         print("Relative Error: ", relative_error*100, "%")
     # If writing to a file
     else:
-        file = open(file_name, "a")
+        file = open(output_file_name, "a")
         file.write("Absolute Error: ", absolute_error)
         file.write("Relative Error: ", relative_error)
         file.close()
+
 
 #tester
 runModelTest(sea)
