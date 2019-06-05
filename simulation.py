@@ -41,11 +41,8 @@ def update_jobs(jobs, job_rate):
     lower_bound = job_rate[0];
     upper_bound = job_rate[1];
 
-<<<<<<< HEAD
     random_jobs = N.random.normal(lower_bound ,upper_bound)
-=======
     random_jobs = N.random.binomial(lower_bound, upper_bound)
->>>>>>> 53cad8a55ba6d762bc1c6e240be82f48c986f766
     rand_delta = jobs * random_jobs
     total_jobs = int(jobs + rand_delta)
     
@@ -200,15 +197,12 @@ def model(city, time = 20, trials = 100):
         population_array[0] = city.population
         
         #0.174 is the amount of jobs that are worked by migrants
-<<<<<<< HEAD
         for year in range (1, time):     
             free_jobs = total_jobs*us.migrant_jobs
-=======
         free_jobs = total_jobs*us.migrant_jobs
         for year in range (1, time):
 
             # Calculate new migrants based on factors
->>>>>>> 53cad8a55ba6d762bc1c6e240be82f48c986f766
             migrants = calculate_migrants(city, free_jobs, crimes, rent, taxes)
             # Account for natural growth
             population_array[year] = natural_pop_growth(population_array[year-1])
@@ -220,19 +214,16 @@ def model(city, time = 20, trials = 100):
             crimes = update_crimes(crimes,city.crimes_range )
             rent = update_rent(rent, city.rent_range)
             taxes = update_taxes (taxes, city.taxes_range)
-<<<<<<< HEAD
 
             #output
             water_array[year] = water_consumption (population_array[year-1], adult_dist)
             food_array[year] = food_consumption (population_array[year-1], adult_dist)
-=======
             free_jobs = total_jobs*us.migrant_jobs
             
             # Output
             second_dist = 1 - age_dist(adult_dist)
             water_array[year] = water_consumption (population_array[year], second_dist)
             food_array[year] = food_consumption (population_array[year], second_dist)
->>>>>>> 53cad8a55ba6d762bc1c6e240be82f48c986f766
             
         population_average.append(population_array)
         water_average.append(water_array)
